@@ -117,6 +117,27 @@ button:hover {
   background-color: #eef1f2;
 }
 
+#progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.weekly-progress-track {
+  width: 200px;
+  height: 16px;
+  overflow: hidden;
+  background-color: #eef1f2;
+  border: 1px solid #cbd2d7;
+  border-radius: 4px;
+}
+
+.weekly-progress-fill {
+  height: 100%;
+  background-color: #286b5b;
+}
+
 @media (max-width: 700px) {
   body {
     padding: 16px;

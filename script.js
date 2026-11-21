@@ -71,6 +71,7 @@ const workoutCards = document.querySelector("#workout-cards");
 const newWorkoutButton = document.querySelector("#new-workout-button");
 const doneButton = document.querySelector("#done-button");
 const historyRows = document.querySelector("#history-rows");
+const progressBar = document.querySelector("#progress-bar");
 const workoutHistory = JSON.parse(localStorage.getItem("workoutHistory") || "[]");
 let lastMatchingExercises = null;
 let lastDuration = "";
@@ -239,6 +240,54 @@ function renderHistory() {
     row.append(dateCell, focusCell, durationCell);
     historyRows.append(row);
   }
+
+  renderWeeklyProgress();
+}
+
+// Shows the total workout minutes from Monday through today.
+function renderWeeklyProgress() {
+  const today = new Date();
+  const monday = new Date(today);
+  const daysSinceMonday = (today.getDay() + 6) % 7;
+  monday.setDate(today.getDate() - daysSinceMonday);
+
+  const todayParts = [
+    today.getFullYear(),
+    String(today.getMonth() + 1).padStart(2, "0"),
+    String(today.getDate()).padStart(2, "0")
+  ];
+  const mondayParts = [
+    monday.getFullYear(),
+    String(monday.getMonth() + 1).padStart(2, "0"),
+    String(monday.getDate()).padStart(2, "0")
+  ];
+  const todayDate = `${todayParts[0]}-${todayParts[1]}-${todayParts[2]}`;
+  const mondayDate = `${mondayParts[0]}-${mondayParts[1]}-${mondayParts[2]}`;
+  let totalMinutes = 0;
+
+  for (const workout of workoutHistory) {
+    if (workout.date >= mondayDate && workout.date <= todayDate) {
+      totalMinutes += Number(workout.duration);
+    }
+  }
+
+  progressBar.textContent = "";
+  const track = document.createElement("div");
+  track.className = "weekly-progress-track";
+  track.setAttribute("role", "progressbar");
+  track.setAttribute("aria-label", "Weekly workout progress");
+  track.setAttribute("aria-valuemin", "0");
+  track.setAttribute("aria-valuemax", "60");
+  track.setAttribute("aria-valuenow", String(Math.min(totalMinutes, 60)));
+
+  const fill = document.createElement("div");
+  fill.className = "weekly-progress-fill";
+  fill.style.width = `${Math.min(totalMinutes / 60 * 100, 100)}%`;
+  track.append(fill);
+
+  const label = document.createElement("span");
+  label.textContent = `${totalMinutes} / 60 min`;
+  progressBar.append(track, label);
 }
 
 // Adds the last generated workout to the history and saves it in the browser.
