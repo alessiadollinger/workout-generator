@@ -69,8 +69,12 @@ const workoutForm = document.querySelector("#workout-form");
 const workoutSummary = document.querySelector("#workout-summary");
 const workoutCards = document.querySelector("#workout-cards");
 const newWorkoutButton = document.querySelector("#new-workout-button");
+const doneButton = document.querySelector("#done-button");
+const historyRows = document.querySelector("#history-rows");
+const workoutHistory = [];
 let lastMatchingExercises = null;
 let lastDuration = "";
+let lastWorkout = null;
 
 // Returns the values of the checked equipment options.
 function getSelectedEquipment() {
@@ -174,7 +178,7 @@ function showExerciseCards(matchingExercises, duration) {
 
   if (matchingExercises.length < 4) {
     workoutCards.textContent = "Not enough exercises - please check more equipment or another level.";
-    return;
+    return false;
   }
 
   const rounds = getRounds(duration);
@@ -186,6 +190,7 @@ function showExerciseCards(matchingExercises, duration) {
   }
 
   workoutCards.append(createSpecialCard("Cool-down: stretching – 3 min"));
+  return true;
 }
 
 // Shows the selected summary and matching exercise cards without reloading the page.
@@ -197,9 +202,12 @@ workoutForm.addEventListener("submit", function (event) {
   const level = workoutForm.querySelector('input[name="level"]:checked').value;
   lastMatchingExercises = getMatchingExercises();
   lastDuration = duration;
+  lastWorkout = null;
 
   workoutSummary.textContent = `${duration} min | ${focus} | ${level}`;
-  showExerciseCards(lastMatchingExercises, duration);
+  if (showExerciseCards(lastMatchingExercises, duration)) {
+    lastWorkout = { focus: focus, duration: duration };
+  }
 });
 
 // Shows a new workout with the settings from the last generated workout.
@@ -213,3 +221,41 @@ function showNewWorkout() {
 }
 
 newWorkoutButton.addEventListener("click", showNewWorkout);
+
+// Rebuilds the history table rows from the saved workouts.
+function renderHistory() {
+  historyRows.textContent = "";
+
+  for (const workout of workoutHistory) {
+    const row = document.createElement("tr");
+    const dateCell = document.createElement("td");
+    const focusCell = document.createElement("td");
+    const durationCell = document.createElement("td");
+
+    dateCell.textContent = workout.date;
+    focusCell.textContent = workout.focus;
+    durationCell.textContent = `${workout.duration} min`;
+    row.append(dateCell, focusCell, durationCell);
+    historyRows.append(row);
+  }
+}
+
+// Adds the last generated workout to the in-memory history.
+function markWorkoutDone() {
+  if (lastWorkout === null) {
+    workoutSummary.textContent = "Please generate a workout first.";
+    return;
+  }
+
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, "0");
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  workoutHistory.push({
+    date: `${day}.${month}.`,
+    focus: lastWorkout.focus,
+    duration: lastWorkout.duration
+  });
+  renderHistory();
+}
+
+doneButton.addEventListener("click", markWorkoutDone);
