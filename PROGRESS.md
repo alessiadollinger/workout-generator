@@ -16,7 +16,7 @@
 - [ ] Step 10: Progress bar for this week, goal 60 min (F9)
 
 ## Decisions & notes
-- (none yet)
+- Exercises with equipment "none" are always allowed.
 
 ## Known problems
-- Exercise list is too small: almost every combination shows "Not enough exercises". It only works with focus "full body" and equipment "none" or "mat".
+- (none)
