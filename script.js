@@ -42,8 +42,65 @@ function parseExercises(lines) {
 const exercises = parseExercises(exerciseLines);
 const workoutForm = document.querySelector("#workout-form");
 const workoutSummary = document.querySelector("#workout-summary");
+const workoutCards = document.querySelector("#workout-cards");
 
-// Shows the selected duration, focus, and level without reloading the page.
+// Returns the values of the checked equipment options.
+function getSelectedEquipment() {
+  const equipmentInputs = workoutForm.querySelectorAll('input[name="equipment"]:checked');
+  const selectedEquipment = [];
+
+  for (const input of equipmentInputs) {
+    selectedEquipment.push(input.value);
+  }
+
+  return selectedEquipment;
+}
+
+// Returns exercises that match the selected focus, level, and equipment.
+function getMatchingExercises() {
+  const focus = workoutForm.elements.focus.value;
+  const selectedLevel = workoutForm.querySelector('input[name="level"]:checked').value;
+  const selectedEquipment = getSelectedEquipment();
+  const matchingExercises = [];
+
+  for (const exercise of exercises) {
+    const matchesFocus = focus === "full body" || exercise.focus === focus;
+    const matchesLevel = selectedLevel === "hard"
+      || exercise.level === "easy"
+      || (selectedLevel === "medium" && exercise.level === "medium");
+
+    const matchesEquipment = selectedEquipment.includes(exercise.equipment);
+    if (matchesFocus && matchesLevel && matchesEquipment) {
+      matchingExercises.push(exercise);
+    }
+  }
+
+  return matchingExercises;
+}
+
+// Replaces the old exercise cards with cards for the matching exercises.
+function showExerciseCards(matchingExercises) {
+  workoutCards.textContent = "";
+
+  for (const exercise of matchingExercises) {
+    const card = document.createElement("div");
+    card.className = "exercise-card";
+
+    const name = document.createElement("h3");
+    name.textContent = exercise.name;
+
+    const timing = document.createElement("p");
+    timing.textContent = "40 s + 20 s";
+
+    const description = document.createElement("p");
+    description.textContent = exercise.description;
+
+    card.append(name, timing, description);
+    workoutCards.append(card);
+  }
+}
+
+// Shows the selected summary and matching exercise cards without reloading the page.
 workoutForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
@@ -52,4 +109,5 @@ workoutForm.addEventListener("submit", function (event) {
   const level = workoutForm.querySelector('input[name="level"]:checked').value;
 
   workoutSummary.textContent = `${duration} min | ${focus} | ${level}`;
+  showExerciseCards(getMatchingExercises());
 });
