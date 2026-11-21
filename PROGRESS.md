@@ -19,4 +19,4 @@
 - (none yet)
 
 ## Known problems
-- (none)
+- Exercise list is too small: almost every combination shows "Not enough exercises". It only works with focus "full body" and equipment "none" or "mat".
