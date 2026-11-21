@@ -43,6 +43,9 @@ const exercises = parseExercises(exerciseLines);
 const workoutForm = document.querySelector("#workout-form");
 const workoutSummary = document.querySelector("#workout-summary");
 const workoutCards = document.querySelector("#workout-cards");
+const newWorkoutButton = document.querySelector("#new-workout-button");
+let lastMatchingExercises = null;
+let lastDuration = "";
 
 // Returns the values of the checked equipment options.
 function getSelectedEquipment() {
@@ -166,7 +169,21 @@ workoutForm.addEventListener("submit", function (event) {
   const duration = workoutForm.elements.duration.value;
   const focus = workoutForm.elements.focus.value;
   const level = workoutForm.querySelector('input[name="level"]:checked').value;
+  lastMatchingExercises = getMatchingExercises();
+  lastDuration = duration;
 
   workoutSummary.textContent = `${duration} min | ${focus} | ${level}`;
-  showExerciseCards(getMatchingExercises(), duration);
+  showExerciseCards(lastMatchingExercises, duration);
 });
+
+// Shows a new workout with the settings from the last generated workout.
+function showNewWorkout() {
+  if (lastMatchingExercises === null) {
+    workoutCards.textContent = "Please generate a workout first.";
+    return;
+  }
+
+  showExerciseCards(lastMatchingExercises, lastDuration);
+}
+
+newWorkoutButton.addEventListener("click", showNewWorkout);
