@@ -14,7 +14,7 @@
 
 ## Next
 
-- 
+- (nothing next)
 
 ## Decisions & notes
 - Exercises with equipment "none" are always allowed.
