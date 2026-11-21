@@ -18,6 +18,7 @@
 ## Decisions & notes
 - Exercises with equipment "none" are always allowed.
 - History is stored as an array of objects { date, focus, duration }, rendered by renderHistory().
+- History is saved in localStorage with the full date.
 
 ## Known problems
 - (none)
