@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workout Generator</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Workout Generator</h1>
+  </header>
+
+  <main>
+    <section id="choose-section" aria-labelledby="choose-heading">
+      <h2 id="choose-heading">1) Choose</h2>
+      <form id="workout-form">
+        <div>
+          <label for="duration">Duration</label>
+          <select id="duration" name="duration">
+            <option value="10">10 min</option>
+            <option value="20">20 min</option>
+            <option value="30">30 min</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="focus">Focus</label>
+          <select id="focus" name="focus">
+            <option value="legs">Legs</option>
+            <option value="core">Core</option>
+            <option value="upper body">Upper body</option>
+            <option value="full body">Full body</option>
+          </select>
+        </div>
+
+        <fieldset>
+          <legend>Equipment</legend>
+          <div>
+            <input type="checkbox" id="equipment-none" name="equipment" value="none" checked>
+            <label for="equipment-none">None</label>
+          </div>
+          <div>
+            <input type="checkbox" id="equipment-mat" name="equipment" value="mat">
+            <label for="equipment-mat">Mat</label>
+          </div>
+          <div>
+            <input type="checkbox" id="equipment-dumbbells" name="equipment" value="dumbbells">
+            <label for="equipment-dumbbells">Dumbbells</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Level</legend>
+          <div>
+            <input type="radio" id="level-easy" name="level" value="easy">
+            <label for="level-easy">Easy</label>
+          </div>
+          <div>
+            <input type="radio" id="level-medium" name="level" value="medium" checked>
+            <label for="level-medium">Medium</label>
+          </div>
+          <div>
+            <input type="radio" id="level-hard" name="level" value="hard">
+            <label for="level-hard">Hard</label>
+          </div>
+        </fieldset>
+
+        <button id="generate-workout" type="submit">Generate workout</button>
+      </form>
+    </section>
+
+    <section id="my-workout-section" aria-labelledby="my-workout-heading">
+      <h2 id="my-workout-heading">2) My workout</h2>
+      <div id="workout-summary"></div>
+      <div id="workout-cards"></div>
+      <button id="done-button" type="button">Done!</button>
+      <button id="new-workout-button" type="button">New workout</button>
+    </section>
+
+    <section id="history-section" aria-labelledby="history-heading">
+      <h2 id="history-heading">3) History</h2>
+      <table id="history-table">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Focus</th>
+            <th scope="col">Duration</th>
+          </tr>
+        </thead>
+        <tbody id="history-rows"></tbody>
+      </table>
+      <div id="progress-bar"></div>
+    </section>
+  </main>
+</body>
+</html>
