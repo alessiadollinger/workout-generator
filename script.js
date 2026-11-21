@@ -91,8 +91,56 @@ function getRandomExercises(matchingExercises) {
   return randomExercises;
 }
 
-// Replaces the old cards with four random matching exercises or a short message.
-function showExerciseCards(matchingExercises) {
+// Returns the round count for the selected workout duration.
+function getRounds(duration) {
+  if (duration === "10") {
+    return 1;
+  }
+  if (duration === "20") {
+    return 3;
+  }
+  return 6;
+}
+
+// Creates a warm-up or cool-down card with its full label.
+function createSpecialCard(title) {
+  const card = document.createElement("div");
+  card.className = "exercise-card";
+
+  const name = document.createElement("h3");
+  name.textContent = title;
+  card.append(name);
+
+  return card;
+}
+
+// Creates an exercise card with its timing, rounds, and description.
+function createExerciseCard(exercise, rounds) {
+  const card = document.createElement("div");
+  card.className = "exercise-card";
+
+  const name = document.createElement("h3");
+  name.textContent = exercise.name;
+
+  const timing = document.createElement("p");
+  timing.textContent = "40 s + 20 s";
+
+  const roundCount = document.createElement("p");
+  if (rounds === 1) {
+    roundCount.textContent = "× 1 round";
+  } else {
+    roundCount.textContent = `× ${rounds} rounds`;
+  }
+
+  const description = document.createElement("p");
+  description.textContent = exercise.description;
+
+  card.append(name, timing, roundCount, description);
+  return card;
+}
+
+// Replaces old cards with warm-up, four exercises, and cool-down or a message.
+function showExerciseCards(matchingExercises, duration) {
   workoutCards.textContent = "";
 
   if (matchingExercises.length < 4) {
@@ -100,23 +148,15 @@ function showExerciseCards(matchingExercises) {
     return;
   }
 
+  const rounds = getRounds(duration);
   const randomExercises = getRandomExercises(matchingExercises);
+  workoutCards.append(createSpecialCard("Warm-up: jumping jacks – 2 min"));
+
   for (const exercise of randomExercises) {
-    const card = document.createElement("div");
-    card.className = "exercise-card";
-
-    const name = document.createElement("h3");
-    name.textContent = exercise.name;
-
-    const timing = document.createElement("p");
-    timing.textContent = "40 s + 20 s";
-
-    const description = document.createElement("p");
-    description.textContent = exercise.description;
-
-    card.append(name, timing, description);
-    workoutCards.append(card);
+    workoutCards.append(createExerciseCard(exercise, rounds));
   }
+
+  workoutCards.append(createSpecialCard("Cool-down: stretching – 3 min"));
 }
 
 // Shows the selected summary and matching exercise cards without reloading the page.
@@ -128,5 +168,5 @@ workoutForm.addEventListener("submit", function (event) {
   const level = workoutForm.querySelector('input[name="level"]:checked').value;
 
   workoutSummary.textContent = `${duration} min | ${focus} | ${level}`;
-  showExerciseCards(getMatchingExercises());
+  showExerciseCards(getMatchingExercises(), duration);
 });
