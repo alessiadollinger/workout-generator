@@ -9,10 +9,10 @@
 - [x] Step 6: Warm-up and cool-down cards plus number of rounds (F5)
 - [x] Step 7: "New workout" button shuffles the exercises (F6)
 - [x] Step 8: "Done!" adds a row to the history table, in memory only (F7)
+- [x] Step 9: Save and load the history with localStorage (F8)
 
 ## Next
 
-- [ ] Step 9: Save and load the history with localStorage (F8)
 - [ ] Step 10: Progress bar for this week, goal 60 min (F9)
 
 ## Decisions & notes

@@ -71,7 +71,7 @@ const workoutCards = document.querySelector("#workout-cards");
 const newWorkoutButton = document.querySelector("#new-workout-button");
 const doneButton = document.querySelector("#done-button");
 const historyRows = document.querySelector("#history-rows");
-const workoutHistory = [];
+const workoutHistory = JSON.parse(localStorage.getItem("workoutHistory") || "[]");
 let lastMatchingExercises = null;
 let lastDuration = "";
 let lastWorkout = null;
@@ -232,7 +232,8 @@ function renderHistory() {
     const focusCell = document.createElement("td");
     const durationCell = document.createElement("td");
 
-    dateCell.textContent = workout.date;
+    const dateParts = workout.date.split("-");
+    dateCell.textContent = `${dateParts[2]}.${dateParts[1]}.`;
     focusCell.textContent = workout.focus;
     durationCell.textContent = `${workout.duration} min`;
     row.append(dateCell, focusCell, durationCell);
@@ -240,7 +241,7 @@ function renderHistory() {
   }
 }
 
-// Adds the last generated workout to the in-memory history.
+// Adds the last generated workout to the history and saves it in the browser.
 function markWorkoutDone() {
   if (lastWorkout === null) {
     workoutSummary.textContent = "Please generate a workout first.";
@@ -248,14 +249,17 @@ function markWorkoutDone() {
   }
 
   const today = new Date();
-  const day = String(today.getDate()).padStart(2, "0");
+  const year = today.getFullYear();
   const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
   workoutHistory.push({
-    date: `${day}.${month}.`,
+    date: `${year}-${month}-${day}`,
     focus: lastWorkout.focus,
     duration: lastWorkout.duration
   });
+  localStorage.setItem("workoutHistory", JSON.stringify(workoutHistory));
   renderHistory();
 }
 
 doneButton.addEventListener("click", markWorkoutDone);
+renderHistory();
