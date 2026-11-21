@@ -78,11 +78,30 @@ function getMatchingExercises() {
   return matchingExercises;
 }
 
-// Replaces the old exercise cards with cards for the matching exercises.
+// Returns up to four different exercises picked at random.
+function getRandomExercises(matchingExercises) {
+  const availableExercises = matchingExercises.slice();
+  const randomExercises = [];
+
+  for (let count = 0; count < 4 && availableExercises.length > 0; count += 1) {
+    const randomIndex = Math.floor(Math.random() * availableExercises.length);
+    randomExercises.push(availableExercises.splice(randomIndex, 1)[0]);
+  }
+
+  return randomExercises;
+}
+
+// Replaces the old cards with four random matching exercises or a short message.
 function showExerciseCards(matchingExercises) {
   workoutCards.textContent = "";
 
-  for (const exercise of matchingExercises) {
+  if (matchingExercises.length < 4) {
+    workoutCards.textContent = "Not enough exercises - please check more equipment or another level.";
+    return;
+  }
+
+  const randomExercises = getRandomExercises(matchingExercises);
+  for (const exercise of randomExercises) {
     const card = document.createElement("div");
     card.className = "exercise-card";
 
