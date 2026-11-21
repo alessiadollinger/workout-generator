@@ -36,7 +36,7 @@ F9. Progress bar: minutes trained this week compared to the weekly goal of 60 mi
 ## Rules (how the features behave)
 - Focus "full body" uses exercises from all focuses.
 - Level: easy → only easy exercises; medium → easy and medium; hard → all levels.
-- Equipment: an exercise is allowed only if its equipment is checked.
+- Equipment: exercises with "none" are always allowed; other exercises only if their equipment is checked.
 - Rounds depend on the duration: 10 min → 1 round, 20 min → 3 rounds, 30 min → 6 rounds
   (warm-up 2 min + cool-down 3 min + 4 exercises × 1 min per round).
 - "This week" means from Monday until today.
