@@ -97,7 +97,8 @@ function getMatchingExercises() {
       || exercise.level === "easy"
       || (selectedLevel === "medium" && exercise.level === "medium");
 
-    const matchesEquipment = selectedEquipment.includes(exercise.equipment);
+    const matchesEquipment = exercise.equipment === "none"
+      || selectedEquipment.includes(exercise.equipment);
     if (matchesFocus && matchesLevel && matchesEquipment) {
       matchingExercises.push(exercise);
     }
