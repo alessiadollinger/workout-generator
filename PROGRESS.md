@@ -14,7 +14,8 @@
 
 ## Next
 
-- (nothing next)
+- Lösch button einbauen für falsch gespeichertes workout
+- Statistik einbauen
 
 ## Decisions & notes
 - Exercises with equipment "none" are always allowed.
